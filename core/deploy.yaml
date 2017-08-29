@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodes-core
+spec:
+  template:
+    metadata:
+      labels:
+        app: forklol-nodes
+        tier: forklol-backend
+    spec:
+      containers:
+      - image: eu.gcr.io/splendid-sled-172714/nodes-core:v1.2
+        name: nodes-core
+        resources:
+          requests:
+            cpu: 750m
+            memory: 3000Mi
+          limits:
+            memory: 3000Mi
+        ports:
+        - containerPort: 8332
+        volumeMounts:
+        - name: core-pvc
+          mountPath: /data-core
+      volumes:
+      - name: core-pvc
+        persistentVolumeClaim:
+          claimName: pvc-core

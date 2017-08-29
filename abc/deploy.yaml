@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nodes-abc
+spec:
+  template:
+    metadata:
+      labels:
+        app: forklol-nodes
+        tier: forklol-backend
+    spec:
+      containers:
+      - image: eu.gcr.io/splendid-sled-172714/nodes-abc:v1.6
+        name: nodes-abc
+        resources:
+          requests:
+            cpu: 750m
+            memory: 3000Mi
+          limits:
+            memory: 3000Mi
+        ports:
+        - containerPort: 8333
+        - containerPort: 8332
+        volumeMounts:
+        - name: abc-pvc
+          mountPath: /data-abc
+      volumes:
+      - name: abc-pvc
+        persistentVolumeClaim:
+          claimName: pvc-abc
